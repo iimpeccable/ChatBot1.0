@@ -21,6 +21,7 @@ class UIHelper
 ╚═╝╚═╝  ╚═══╝  ╚═══╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚══════╝
                           AI
 ");
+    }
     public static void ShowError(string message)
     {
         Console.ForegroundColor = ConsoleColor.Red;
