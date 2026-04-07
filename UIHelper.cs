@@ -1,11 +1,22 @@
 ﻿using System;
 using System.Threading;
+using System.Media;
+
 
 class UIHelper
 {
     public static void PlayGreeting()
     {
-        Console.WriteLine("[Greeting sound would play here]");
+        try
+        {
+            SoundPlayer player = new SoundPlayer("Assets/greeting.wav");
+            player.Load();
+            player.PlaySync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Error playing greeting] {ex.Message}");
+        }
     }
 
     public static void ShowLogo()
