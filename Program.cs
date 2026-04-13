@@ -6,6 +6,8 @@ class Program
     {
         Console.Title = "Cybersecurity Awareness Bot";
 
+        Console.ForegroundColor = ConsoleColor.Magenta;
+
         ChatBot bot = new ChatBot();
         bot.Start();
     }

@@ -6,7 +6,7 @@ class Scenarios
     {
         string question = input.ToLower().Trim();
 
-        if (question.Contains("how are you"))
+        if (question.Contains("how"))
             Console.WriteLine("I’m just code, but I’m running smoothly!\n");
         else if (question.Contains("purpose"))
             Console.WriteLine("My purpose is to teach you about cybersecurity awareness.\n");
@@ -41,7 +41,18 @@ class Scenarios
         Console.WriteLine("2) MyName2026");
         Console.WriteLine("3) T!m3$Tr0ng#Pass!");
         string answer = Console.ReadLine();
-        Console.WriteLine(answer == "3" ? "Correct!\n" : "Try again.\n");
+        if (answer == "3")
+        {
+            Console.WriteLine("Correct!\n");
+            UIHelper.ShowMenu(); 
+        }
+        else
+        {
+
+            UIHelper.ShowError("Incorrect. Read and try again\n ");
+            ShowPasswordModule();
+        }
+
     }
 
     private static void ShowPhishingModule()
@@ -56,7 +67,17 @@ class Scenarios
         Console.WriteLine("2) Delete it or report it");
         Console.WriteLine("3) Reply with your details");
         string answer = Console.ReadLine();
-        Console.WriteLine(answer == "2" ? "Correct!\n" : "Try again.\n");
+        if (answer == "2")
+        {
+            Console.WriteLine("Correct!\n");
+            UIHelper.ShowMenu();
+        }
+        else
+        {
+            UIHelper.ShowError("Incorrect. Read and try again\n ");
+            ShowPhishingModule();
+        }
+
     }
 
     private static void ShowPrivacyModule()
@@ -70,7 +91,18 @@ class Scenarios
         Console.WriteLine("2) Post your location in real-time");
         Console.WriteLine("3) Limit personal info and adjust privacy settings");
         string answer = Console.ReadLine();
-        Console.WriteLine(answer == "3" ? "Correct!\n" : "Try again.\n");
+        if (answer == "3")
+        {
+            Console.WriteLine("Correct!\n");
+            UIHelper.ShowMenu(); 
+        }
+        else
+        {
+
+            UIHelper.ShowError("Incorrect. Read and try again\n ");
+            ShowPrivacyModule();
+        }
+
     }
 
     private static void ShowMalwareModule()
@@ -85,6 +117,16 @@ class Scenarios
         Console.WriteLine("2) Use antivirus software and updates");
         Console.WriteLine("3) Ignore software updates");
         string answer = Console.ReadLine();
-        Console.WriteLine(answer == "2" ? "Correct!\n" : "Try again.\n");
+        if (answer == "2")
+        {
+            Console.WriteLine("Correct!\n");
+            UIHelper.ShowMenu();
+        }
+        else
+        {
+            Console.WriteLine("Incorrect. Read and try again\n ");
+            ShowMalwareModule();
+        }
+
     }
 }

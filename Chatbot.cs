@@ -19,7 +19,7 @@ class ChatBot
         UIHelper.TypeEffect("- What can I ask you about?");
         UIHelper.TypeEffect("- Tell me about password safety");
         UIHelper.TypeEffect("- What is phishing?");
-        UIHelper.TypeEffect("- How do I browse safely?");
+        UIHelper.TypeEffect("- What is malware?");
         UIHelper.TypeEffect("Type 'exit' to close the chatbot.\n");
 
         RunConversation();
