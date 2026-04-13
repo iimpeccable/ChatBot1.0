@@ -1,10 +1,13 @@
-name: .NET CI
+name: .NET Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # Opt into Node.js 24 now
 
 jobs:
   build:
@@ -17,13 +20,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '6.0.x'   # Match your project’s target framework
+        dotnet-version: '8.0.x'   # Match your project’s target framework
 
     - name: Restore dependencies
-      run: dotnet restore ./MyProject.sln
+      run: dotnet restore
 
     - name: Build project
-      run: dotnet build ./MyProject.sln --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore
 
     - name: Run tests
-      run: dotnet test ./MyProject.sln --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal
