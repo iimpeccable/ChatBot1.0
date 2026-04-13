@@ -6,9 +6,12 @@ on:
   pull_request:
     branches: [ "main", "master" ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
@@ -20,7 +23,10 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore "ChatBot 1.0.csproj"
 
     - name: Build project
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build "ChatBot 1.0.csproj" --configuration Release --no-restore
+
+    - name: Run tests
+      run: dotnet test "ChatBot 1.0.csproj" --no-build --verbosity normal
