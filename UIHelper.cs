@@ -1,86 +1,109 @@
 ﻿using System;
-using System.Threading;
+using System.IO;
 using System.Media;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
-class UIHelper
+namespace ChatBot1._0GUI
 {
-    public static void PlayGreeting()
+    class UIHelper
     {
-        try
+        public static void PlayGreeting()
         {
-            /// Play greeting sound
-           
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string assetsPath = Path.Combine(baseDir, "Assets");
 
-            SoundPlayer player2 = new SoundPlayer("Assets/propergreeting.wav");
-            player2.Load();
-            player2.PlaySync();
-            SoundPlayer player1 = new SoundPlayer("Assets/greeting.wav");
-            player1.Load();
-            player1.PlaySync();
+                string properGreeting = Path.Combine(assetsPath, "propergreeting.wav");
+                string greeting = Path.Combine(assetsPath, "greeting.wav");
 
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            
+                if (File.Exists(properGreeting))
+                {
+                    SoundPlayer player2 = new SoundPlayer(properGreeting);
+                    player2.Load();
+                    player2.PlaySync();
+                }
+
+                if (File.Exists(greeting))
+                {
+                    SoundPlayer player1 = new SoundPlayer(greeting);
+                    player1.Load();
+                    player1.PlaySync();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"[Error playing greeting] {ex.Message}",
+                    "Audio Error", System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
+            }
         }
-        catch (Exception ex)
+
+        public static void AddMessage(StackPanel chatPanel, string text, string role)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"[Error playing greeting] {ex.Message}");
-            Console.ForegroundColor = ConsoleColor.Magenta;
+            var tb = new TextBlock
+            {
+                Text = text,
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new System.Windows.Thickness(0, 5, 0, 5),
+                FontFamily = new FontFamily("Segoe UI"),
+                FontSize = 14
+            };
 
+            switch (role.ToLower())
+            {
+                case "user":
+                    tb.Foreground = Brushes.LightBlue;
+                    break;
+                case "bot":
+                    tb.Foreground = Brushes.LightGreen;
+                    break;
+                case "error":
+                    tb.Foreground = Brushes.Tomato;
+                    break;
+                case "tip":
+                    tb.Foreground = Brushes.Gold;
+                    break;
+                default:
+                    tb.Foreground = Brushes.White;
+                    break;
+            }
+
+            chatPanel.Children.Add(tb);
         }
-    }
 
-    public static void ShowLogo()
-    {
-        Console.ForegroundColor = ConsoleColor.DarkGreen; 
-        Console.WriteLine("============================================================");
-        Console.WriteLine(@"
-██╗███╗   ██╗██╗   ██╗██╗ ██████╗████████╗██╗   ██╗███████╗
-██║████╗  ██║██║   ██║██║██╔════╝╚══██╔══╝██║   ██║██╔════╝
-██║██╔██╗ ██║██║   ██║██║██║        ██║   ██║   ██║███████╗
-██║██║╚██╗██║╚██╗ ██╔╝██║██║        ██║   ██║   ██ ╚════██║
-██║██║ ╚████║ ╚████╔╝ ██║╚██████╗   ██║   ╚██████╝ ███████║
-╚═╝╚═╝  ╚═══╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚══════╝
-                          Awareness Bot
-");
-        Console.WriteLine("============================================================");
-        Console.ResetColor();
-        Console.ForegroundColor = ConsoleColor.Magenta;
-    }
-
-    public static void ShowError(string message)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(message);
-        Console.ResetColor();
-        Console.ForegroundColor = ConsoleColor.Magenta;
-    }
-
-    public static void TypeEffect(string text, int delay = 20)
-    {
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        foreach (char c in text)
+        public static void ShowMenu(StackPanel chatPanel)
         {
-            Console.Write(c);
-            Thread.Sleep(delay);
+            AddMessage(chatPanel, "Invictus Menu:", "bot");
+            AddMessage(chatPanel, "- Ask about password safety", "bot");
+            AddMessage(chatPanel, "- Ask about phishing", "bot");
+            AddMessage(chatPanel, "- Ask about privacy", "bot");
+            AddMessage(chatPanel, "- Ask about malware", "bot");
+            AddMessage(chatPanel, "Type 'tip' to get a tip on the current topic.", "bot");
+            AddMessage(chatPanel, "Type 'exit' to close Invictus.", "bot");
         }
-        Console.ResetColor();
-        Console.WriteLine();
-        Console.ForegroundColor = ConsoleColor.Magenta;
-    }
 
-    public static void ShowMenu()
-    {
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine("\nYou can ask me things like:");
-        Console.WriteLine("- How are you?");
-        Console.WriteLine("- What’s your purpose?");
-        Console.WriteLine("- What can I ask you about?");
-        Console.WriteLine("- Tell me about password safety");
-        Console.WriteLine("- What is phishing?");
-        Console.WriteLine("- What is malware?");
-        Console.WriteLine("Type 'exit' to close the chatbot.\n");
-        Console.ResetColor();
-        Console.ForegroundColor = ConsoleColor.Magenta;
+        public static async Task ShowTypingAnimatedAsync(StackPanel chatPanel)
+        {
+            var tb = new TextBlock
+            {
+                Foreground = Brushes.Gray,
+                FontStyle = FontStyles.Italic,
+                Margin = new System.Windows.Thickness(0, 5, 0, 5)
+            };
+
+            chatPanel.Children.Add(tb);
+
+            for (int i = 0; i < 3; i++)
+            {
+                tb.Text = "Invictus is typing" + new string('.', i + 1);
+                await Task.Delay(500);
+            }
+
+            chatPanel.Children.Remove(tb);
+        }
     }
 }

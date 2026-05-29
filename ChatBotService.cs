@@ -1,33 +1,17 @@
-﻿class ChatbotService
+﻿namespace ChatBot1._0GUI
 {
-    private readonly ResponseService _responseService;
-
-    public ChatbotService()
+    class ChatbotService
     {
-        _responseService = new ResponseService();
-    }
+        private readonly ResponseService _responseService;
 
-    public void StartChat(UserProfile user)
-    {
-        bool running = true;
-        while (running)
+        public ChatbotService(UserProfile user)
         {
-            Console.Write($"{user.Name}: ");
-            string? userInput = Console.ReadLine();
+            _responseService = new ResponseService(user);
+        }
 
-            if (string.IsNullOrWhiteSpace(userInput))
-            {
-                UIHelper.ShowError("Invalid input. Please type a valid question.");
-                continue;
-            }
-
-            _responseService.ProcessInput(userInput, user.Name);
-
-            if (userInput.Trim().Equals("exit", StringComparison.OrdinalIgnoreCase))
-            {
-                running = false;
-                UIHelper.TypeEffect($"Goodbye {user.Name}! Stay safe online.");
-            }
+        public (string response, Quiz? quiz) ProcessInput(string input)
+        {
+            return _responseService.ProcessInput(input);
         }
     }
 }
