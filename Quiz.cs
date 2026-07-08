@@ -2,10 +2,13 @@
 
 namespace ChatBot1._0GUI
 {
-    public class Quiz
+    class Quiz
     {
-        public string Question { get; set; }
-        public List<string> Options { get; set; }
+        public string Question { get; set; } = string.Empty;
+        public List<string> Options { get; set; } = new List<string>();
         public int CorrectIndex { get; set; }
+
+        /// Explanations after answers
+        public string Explanation { get; set; } = string.Empty;
     }
 }

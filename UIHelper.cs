@@ -36,9 +36,9 @@ namespace ChatBot1._0GUI
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"[Error playing greeting] {ex.Message}",
-                    "Audio Error", System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Error);
+                MessageBox.Show($"[Error playing greeting] {ex.Message}",
+                    "Audio Error", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 
@@ -48,7 +48,7 @@ namespace ChatBot1._0GUI
             {
                 Text = text,
                 TextWrapping = TextWrapping.Wrap,
-                Margin = new System.Windows.Thickness(0, 5, 0, 5),
+                Margin = new Thickness(0, 5, 0, 5),
                 FontFamily = new FontFamily("Segoe UI"),
                 FontSize = 14
             };
@@ -67,6 +67,22 @@ namespace ChatBot1._0GUI
                 case "tip":
                     tb.Foreground = Brushes.Gold;
                     break;
+                case "score":
+                    tb.Foreground = Brushes.Cyan;
+                    tb.FontWeight = FontWeights.Bold;
+                    break;
+                case "log":
+                    tb.Foreground = Brushes.Orange;
+                    tb.FontStyle = FontStyles.Italic;
+                    break;
+                case "reminder":
+                    tb.Foreground = Brushes.MediumPurple;
+                    tb.FontWeight = FontWeights.SemiBold;
+                    break;
+                case "task":
+                    tb.Foreground = Brushes.LightSalmon;
+                    tb.FontWeight = FontWeights.SemiBold;
+                    break;
                 default:
                     tb.Foreground = Brushes.White;
                     break;
@@ -77,13 +93,17 @@ namespace ChatBot1._0GUI
 
         public static void ShowMenu(StackPanel chatPanel)
         {
-            AddMessage(chatPanel, "Invictus Menu:", "bot");
+            AddMessage(chatPanel, "=== Invictus Menu ===", "bot");
             AddMessage(chatPanel, "- Ask about password safety", "bot");
             AddMessage(chatPanel, "- Ask about phishing", "bot");
             AddMessage(chatPanel, "- Ask about privacy", "bot");
             AddMessage(chatPanel, "- Ask about malware", "bot");
-            AddMessage(chatPanel, "Type 'tip' to get a tip on the current topic.", "bot");
-            AddMessage(chatPanel, "Type 'exit' to close Invictus.", "bot");
+            AddMessage(chatPanel, "- Type 'quiz' to start the Cybersecurity Mini-Game", "bot");
+            AddMessage(chatPanel, "- Type 'tip' to get a tip on the current topic", "bot");
+            AddMessage(chatPanel, "- Type 'log' to view your activity log", "bot");
+            AddMessage(chatPanel, "- Type 'reminder' to add or view reminders", "bot");
+            AddMessage(chatPanel, "- Type 'task' to add or view tasks", "bot");
+            AddMessage(chatPanel, "- Type 'exit' to close Invictus", "bot");
         }
 
         public static async Task ShowTypingAnimatedAsync(StackPanel chatPanel)
@@ -92,7 +112,7 @@ namespace ChatBot1._0GUI
             {
                 Foreground = Brushes.Gray,
                 FontStyle = FontStyles.Italic,
-                Margin = new System.Windows.Thickness(0, 5, 0, 5)
+                Margin = new Thickness(0, 5, 0, 5)
             };
 
             chatPanel.Children.Add(tb);
@@ -104,6 +124,52 @@ namespace ChatBot1._0GUI
             }
 
             chatPanel.Children.Remove(tb);
+        }
+
+        /// Quiz score summary
+        public static void ShowScore(StackPanel chatPanel, int score, int total)
+        {
+            string feedback = score >= 8
+                ? $"Great job! You’re a cybersecurity pro! Final Score: {score}/{total}"
+                : $"Keep learning to stay safe online! Final Score: {score}/{total}";
+
+            AddMessage(chatPanel, feedback, "score");
+        }
+
+        /// Activity log
+        public static void ShowActivityLog(StackPanel chatPanel, string log)
+        {
+            AddMessage(chatPanel, "=== Recent Activity Log ===", "log");
+            AddMessage(chatPanel, log, "log");
+        }
+        public static void ShowStructuredLog(StackPanel chatPanel, List<string> entries, string title, string role)
+        {
+            AddMessage(chatPanel, $"=== {title} ===", role);
+            if (entries.Count == 0)
+            {
+                AddMessage(chatPanel, "No entries found.", role);
+                return;
+            }
+
+            foreach (var entry in entries)
+            {
+                AddMessage(chatPanel, entry, role);
+            }
+        }
+
+
+        /// Reminders
+        public static void ShowReminders(StackPanel chatPanel, string reminders)
+        {
+            AddMessage(chatPanel, "=== Your Reminders ===", "reminder");
+            AddMessage(chatPanel, reminders, "reminder");
+        }
+
+        /// Tasks
+        public static void ShowTasks(StackPanel chatPanel, string tasks)
+        {
+            AddMessage(chatPanel, "=== Your Tasks ===", "task");
+            AddMessage(chatPanel, tasks, "task");
         }
     }
 }
